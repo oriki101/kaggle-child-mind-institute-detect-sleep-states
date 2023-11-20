@@ -120,6 +120,10 @@ def main(cfg: InferenceConfig):
 
     with trace("inference"):
         keys, preds = inference(cfg.duration, test_dataloader, model, device, use_amp=cfg.use_amp)
+        series_ids = np.array(list(map(lambda x: x.split("_")[0], keys)))
+        unique_series_ids = np.unique(series_ids)
+        np.save(Path(cfg.dir.sub_dir) / f"ids_{cfg.seed}", unique_series_ids)
+        np.save(Path(cfg.dir.sub_dir) / f"preds_{cfg.seed}", unique_series_ids)
 
     with trace("make submission"):
         sub_df = make_submission(
