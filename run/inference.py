@@ -124,8 +124,11 @@ def main(cfg: InferenceConfig):
     print("-"*10)
     print("make npy")
     series_ids = np.array(list(map(lambda x: x.split("_")[0], keys)))
-    unique_series_ids = np.unique(series_ids)
-    np.save(Path(cfg.dir.sub_dir) / f"ids_{cfg.seed}", unique_series_ids)
+    with open(Path(cfg.dir.sub_dir) / f"keys_{cfg.seed}.txt",'w') as f:
+        for key in keys:
+            f.write(f"{key}\n")
+    # unique_series_ids = np.unique(series_ids)
+    np.save(Path(cfg.dir.sub_dir) / f"ids_{cfg.seed}", series_ids)
     np.save(Path(cfg.dir.sub_dir) / f"preds_{cfg.seed}", preds)
 
     print("-"*10)
